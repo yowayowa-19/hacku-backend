@@ -1,4 +1,4 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
   - name: 機能追加
     url: https://github.com/yowayowa-19/hacku-backend/issues/new?template=feature.md&projects=yowayowa-19%2Fprojects%2F1
@@ -6,7 +6,7 @@ contact_links:
     # https://github.com/{REPO}/issues/new?template=issue.md&projects={ORGANIZATION OR REPO}%2F{PROJECT_NUMBER}&labels=enhancement
     about: Issue template のテスト
 
-  - name: 機能追加
+  - name: 機能追加1
     url: https://github.com/yowayowa-19/hacku-backend/issues/new?template=feature.md&projects=yowayowa-19%2F1
     about: Issue template のテスト
     
