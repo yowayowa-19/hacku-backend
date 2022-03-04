@@ -2,8 +2,8 @@
 name: Custom issue template
 about: Describe this issue template's purpose here.
 title: ''
-labels: ''
-assignees: ''
+labels: back
+assignees: t4t5u0
 
 ---
 
