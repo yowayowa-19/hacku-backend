@@ -1,16 +1,16 @@
-from fastapi import FastAPI
 import uvicorn
-from hacku_backend.libs.akubi import Akubi, akubi_c
-from libs.db_util import create_database
-from libs.register import UserCredential
+from fastapi import FastAPI
 
-from libs.register import register_c
+from libs.akubi import Akubi, akubi_c
+from libs.db_util import create_database
+from libs.register import UserCredential, register_c
 
 app = FastAPI()
 
 
 @app.post("/akubi")
 def akubi(akubi: Akubi):
+    "yawned_atはいらないです"
     return akubi_c(akubi)
 
 

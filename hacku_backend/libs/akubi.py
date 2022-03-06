@@ -1,7 +1,9 @@
 from datetime import datetime
 from pydantic import BaseModel
 
-from hacku_backend.libs.db_util import connect
+import psycopg2
+
+from libs.db_util import connect
 
 # view
 
@@ -23,10 +25,13 @@ def akubi_c(akubi: Akubi):
 def akubi_m(akubi: Akubi):
     yawned_at = datetime.now()
     
-    with conn := connect(), cur := conn.cursor():
+    with connect() as conn, conn.cursor() as cur:
+        conn: psycopg2.connection
+        cur: psycopg2.cursor
         cur.execute(
             """INSERT INTO akubi (user_id, yawned_at, latitude, longitude) 
-                VALUES(%d, %s, %lf, %lf);""",
+                VALUES(%s, %s, %s, %s) 
+                RETURNING yawned_at;""",
             (akubi.user_id, yawned_at, akubi.latitude, akubi.longitude),
         )
-        # return cur.fetchone()[0]
+        print(cur.fetchone()[0])

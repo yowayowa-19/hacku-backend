@@ -32,7 +32,9 @@ def connect_delay():
 
 
 def create_database():
-    with conn := connect_delay(), cur := conn.cursor():
+    with connect_delay() as conn, conn.cursor() as cur:
+        conn: psycopg2.connection
+        cur: psycopg2.cursor
         cur.execute(
             """CREATE TABLE IF NOT EXISTS users (
                 user_id SERIAL PRIMARY KEY,
@@ -47,18 +49,14 @@ def create_database():
                 user_id INTEGER,
                 yawned_at TIMESTAMP,
                 latitude REAL,
-                longitude REAL,
-            )"""
+                longitude REAL);"""
         )
 
         cur.execute(
             """CREATE TABLE IF NOT EXISTS akubi_combo(
                 combo_id SERIAL PRIMARY KEY,
                 combo_count INTEGER,
-                distance REAL,
-            )"""
+                distance REAL);"""
         )
-
-        conn.commit()
 
         
