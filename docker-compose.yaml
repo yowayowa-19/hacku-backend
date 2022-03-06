@@ -9,12 +9,13 @@ services:
       - ./hacku_backend:/usr/src/app
     ports:
       - 8000:8000
-    command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0"]
+    command: ["python", "main.py"]
+    restart: always
 
   postgres:
     image: postgres:14.0
     environment:
-      POSTGRES_USER: hoge
+      POSTGRES_USER: yowayowa
       POSTGRES_PASSWORD: "pass" # あとでsecretsに変更する
       POSTGRES_DB: "pg"
       PGDATA: /var/lib/postgresql/data/pgdata
@@ -23,3 +24,4 @@ services:
     container_name: postgres-db
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
+      - ./postgresql/init:/docker-entrypoint-initdb.d
