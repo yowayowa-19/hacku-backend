@@ -1,7 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel
+from typing import Optional
 
 import psycopg2
+from pydantic import BaseModel
 
 from libs.db_util import connect
 
@@ -9,7 +10,7 @@ from libs.db_util import connect
 
 class Akubi(BaseModel):
     user_id: int
-    # yawned_at: datetime サーバーで生成するから不要
+    yawned_at: Optional[datetime] # サーバーで生成するから不要
     latitude: float
     longitude: float
 
