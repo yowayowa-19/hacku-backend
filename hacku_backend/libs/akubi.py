@@ -17,8 +17,7 @@ class Akubi(BaseModel):
 # controller
 
 def akubi_c(akubi: Akubi):
-    akubi_m(akubi)
-    return {"message": "ok"}
+    return {"last_yarwned_at": akubi_m(akubi)}
 
 # model
 
@@ -34,4 +33,4 @@ def akubi_m(akubi: Akubi):
                 RETURNING yawned_at;""",
             (akubi.user_id, yawned_at, akubi.latitude, akubi.longitude),
         )
-        print(cur.fetchone()[0])
+        return cur.fetchone()[0]
