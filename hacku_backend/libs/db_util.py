@@ -20,8 +20,6 @@ def connect():
         print(e)
         time.sleep(5)
         return None
-
-    print(type(conn))
     return conn
 
 
@@ -32,14 +30,35 @@ def connect_delay():
     return conn
 
 
-def create_database():
 
-    with connect_delay() as conn, conn.cursor() as cur:
+def create_database():
+    with conn := connect_delay(), cur := conn.cursor():
         cur.execute(
             """CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
+                user_id SERIAL PRIMARY KEY,
                 name TEXT, 
                 salt TEXT, 
                 digest TEXT);"""
         )
+        
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS akubi (
+                akubi_id SERIAL PRIMARY KEY,
+                user_id INTEGER,
+                yawned_at TIMESTAMP,
+                latitude REAL,
+                longitude REAL,
+            )"""
+        )
+
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS akubi_combo(
+                combo_id SERIAL PRIMARY KEY,
+                combo_count INTEGER,
+                distance REAL,
+            )"""
+        )
+
         conn.commit()
+
+        
