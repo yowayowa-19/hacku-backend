@@ -36,6 +36,10 @@ def create_database():
 
     with connect_delay() as conn, conn.cursor() as cur:
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS users (name TEXT, salt TEXT, digest TEXT);"
+            """CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                name TEXT, 
+                salt TEXT, 
+                digest TEXT);"""
         )
         conn.commit()
