@@ -17,6 +17,7 @@ def akubi(akubi: Akubi):
 
 @app.post("/combo")
 def combo(last_akubi: LastAkubi):
+    "検証用にコンボ受付時間を5分に設定しています"
     return combo_c(last_akubi)
     # return {"combo_count": 0}
 
