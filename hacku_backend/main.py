@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+from hacku_backend.libs.akubi import Akubi, akubi_c
 from libs.db_util import create_database
 from libs.register import UserCredential
 
@@ -9,8 +10,8 @@ app = FastAPI()
 
 
 @app.post("/akubi")
-def akubi():
-    return {"message": "hello"}
+def akubi(akubi: Akubi):
+    return akubi_c(akubi)
 
 
 @app.get("/combo")
