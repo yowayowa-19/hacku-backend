@@ -13,6 +13,8 @@ class UserCredential(BaseModel):
     name: str
     password: str
 
+class UserId(BaseModel):
+    id: int
 
 # controller
 

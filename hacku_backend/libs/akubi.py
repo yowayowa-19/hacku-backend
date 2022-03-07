@@ -10,10 +10,12 @@ from libs.db_util import connect
 
 class Akubi(BaseModel):
     user_id: int
-    yawned_at: Optional[datetime] # サーバーで生成するから不要
+    yawned_at: Optional[datetime] = None # サーバーで生成するから不要
     latitude: float
     longitude: float
 
+class AkubiResult(BaseModel):
+    last_yawned_at: datetime
 
 # controller
 
