@@ -20,7 +20,7 @@ class AkubiResult(BaseModel):
 # controller
 
 def akubi_c(akubi: Akubi):
-    return {"last_yarwned_at": akubi_m(akubi)}
+    return AkubiResult(last_yawned_at=akubi_m(akubi)).dict()
 
 # model
 

@@ -60,10 +60,17 @@ def create_database():
         )
 
         cur.execute(
-            """CREATE TABLE IF NOT EXISTS ranking(
+            """CREATE TABLE IF NOT EXISTS combo_ranking(
                 rank_id SERIAL PRIMARY KEY,
-                combo INTEGER,
-                distance REAL,
+                user_id INTEGER,
+                total_combo_count INTEGER
+            );"""
+        )
 
-            )"""
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS distance_ranking_user(
+                rank_id SERIAL PRIMARY KEY,
+                user_id INTEGER,
+                total_distance REAL
+            );"""
         )
