@@ -37,7 +37,7 @@ def create_user(user: UserCredential) -> int:
         conn: psycopg2.connection
         cur: psycopg2.cursor
         cur.execute(
-            "INSERT INTO users (name, salt, digest) VALUES(%s, %s, %s) RETURNING id;",
+            "INSERT INTO users (name, salt, digest) VALUES(%s, %s, %s) RETURNING user_id;",
             (user.name, salt, digest),
         )
         return cur.fetchone()[0]
