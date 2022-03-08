@@ -61,7 +61,7 @@ def combo_m(last_akubi: LastAkubi):
             SELECT user_id, yawned_at, latitude, longitude
             FROM akubi 
             WHERE yawned_at < %s
-            AND %s < yawned_at + cast( '%s minuites' as interval)
+            AND %s < yawned_at + cast( '%s minutes' as interval)
             AND user_id != %s;
             """,
             (

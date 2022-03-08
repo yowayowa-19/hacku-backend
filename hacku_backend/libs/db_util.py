@@ -59,4 +59,11 @@ def create_database():
                 distance REAL);"""
         )
 
-        
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS ranking(
+                rank_id SERIAL PRIMARY KEY,
+                combo INTEGER,
+                distance REAL,
+
+            )"""
+        )
