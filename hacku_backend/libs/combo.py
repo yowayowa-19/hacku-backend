@@ -1,5 +1,8 @@
 import psycopg2
 
+from geopy.distance import geodesic
+
+
 from .db_util import connect
 from .view import Akubi, AkubiCombo, LastAkubi
 
@@ -57,11 +60,15 @@ def combo_m(last_akubi: LastAkubi):
         return result
 
 
-def distance(latitude: float, longitude: float) -> float:
-    return (latitude**2 + longitude**2) ** 0.5
+def distance(first: tuple[float], second: tuple[float]) -> float:
+    return geodesic(first, second).km
 
 
 def calc_distance(akubis: list[Akubi]) -> float:
+    latlong_list = [(item.latitude, item.longitude) for item in akubis]
     result = 0
-    [result := result + distance(akubi.latitude, akubi.longitude) for akubi in akubis]
+    [
+        result := result + distance(f, s)
+        for f, s in zip(latlong_list[:-1], latlong_list[1:])
+    ]
     return result
