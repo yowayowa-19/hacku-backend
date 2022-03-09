@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from libs.akubi import akubi_c
 from libs.combo import combo_c
 from libs.db_util import create_database
+from libs.ranking import ranking_c
 from libs.register import register_c
 from libs.view import *
 
@@ -26,6 +27,13 @@ def combo(last_akubi: LastAkubi):
 @app.post("/register/", response_model=UserId)
 def register(user: UserCredential) -> dict[str:str]:
     return register_c(user)
+    # return {}
+
+
+@app.get("/ranking", response_model=TotalRanking)
+def ranking(user_id: int):
+
+    return ranking_c(user_id)
     # return {}
 
 

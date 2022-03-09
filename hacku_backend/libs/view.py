@@ -34,3 +34,17 @@ class UserCredential(BaseModel):
 
 class UserId(BaseModel):
     id: int
+
+
+class Ranking(BaseModel):
+    contain_user_id: bool
+    first_id: int
+    end_id: int
+    total_combo_count: int
+    total_distance: float
+    rank: int
+
+
+class TotalRanking(BaseModel):
+    combo_ranking: list[Ranking]
+    distance_ranking: list[Ranking]
