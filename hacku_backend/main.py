@@ -9,7 +9,7 @@ from libs.register import UserCredential, UserId, register_c
 app = FastAPI()
 
 
-@app.post("/akubi/", response_model=AkubiResult)
+@app.post("/akubi/", response_model=AkubiCombo)
 def akubi(akubi: Akubi):
     "yawned_atはいらないです"
     return akubi_c(akubi)

@@ -40,7 +40,8 @@ def create_database():
                 user_id SERIAL PRIMARY KEY,
                 name TEXT, 
                 salt TEXT, 
-                digest TEXT);"""
+                digest TEXT
+                );"""
         )
         
         cur.execute(
@@ -49,28 +50,43 @@ def create_database():
                 user_id INTEGER,
                 yawned_at TIMESTAMP,
                 latitude REAL,
-                longitude REAL);"""
+                longitude REAL
+                );"""
         )
 
         cur.execute(
             """CREATE TABLE IF NOT EXISTS akubi_combo(
                 combo_id SERIAL PRIMARY KEY,
                 combo_count INTEGER,
-                distance REAL);"""
+                distance REAL
+                );"""
         )
 
         cur.execute(
             """CREATE TABLE IF NOT EXISTS combo_ranking(
                 rank_id SERIAL PRIMARY KEY,
                 user_id INTEGER,
-                total_combo_count INTEGER
-            );"""
+                total_combo_count INTEGER,
+                rank INTEGER
+                );"""
         )
 
         cur.execute(
-            """CREATE TABLE IF NOT EXISTS distance_ranking_user(
+            """CREATE TABLE IF NOT EXISTS distance_ranking(
                 rank_id SERIAL PRIMARY KEY,
                 user_id INTEGER,
-                total_distance REAL
-            );"""
+                total_distance REAL,
+                rank INTEGER
+                );"""
+        )
+
+
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS ongoing_combo(
+                tmp_id SERIAL PRIMARY KEY,
+                user_id INTEGER,
+                yawned_at TIMESTAMP,
+                latitude REAL,
+                longitude REAL
+                );"""
         )
