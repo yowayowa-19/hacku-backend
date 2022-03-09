@@ -40,7 +40,7 @@ def combo_m(last_akubi: LastAkubi):
         cur.execute(
             """
             SELECT user_id, yawned_at, latitude, longitude
-            FROM akubi 
+            FROM ongoing_combo 
             WHERE yawned_at < %s
             AND %s < yawned_at + cast( '%s minutes' as interval)
             AND user_id != %s;
