@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 
-from libs.akubi import Akubi, AkubiResult, akubi_c
-from libs.combo import AkubiCombo, LastAkubi, combo_c
+from libs.akubi import akubi_c
+from libs.combo import combo_c
 from libs.db_util import create_database
-from libs.register import UserCredential, UserId, register_c
+from libs.register import register_c
+from libs.view import *
 
 app = FastAPI()
 
