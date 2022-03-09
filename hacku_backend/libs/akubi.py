@@ -29,9 +29,9 @@ def akubi_m(akubi: Akubi):
                 LIMIT 1;""",
         )
 
-        last_yawned_at = cur.fetchone()[0]
+        last_yawned_at = cur.fetchone()[0] if cur.rowcount > 0 else None
 
-        if yawned_at - last_yawned_at < timedelta(minutes=5):
+        if last_yawned_at and  yawned_at - last_yawned_at < timedelta(minutes=5):
             cur.execute(
                 """DELETE * 
                 FROM ongoing_combo 
@@ -72,7 +72,8 @@ def akubi_m(akubi: Akubi):
         return result
 
 
-def decide_combo(cur: psycopg2.cursor):
+def decide_combo(cur):
+    cur: psycopg2.cursor
     cur.execute(
         """DELETE * 
         FROM ongoing_combo 
@@ -158,13 +159,15 @@ def calc_distance(latlong_list: list[tuple[float]]) -> float:
     ]
     return result
 
-def get_minimal_combo(cur: psycopg2.cursor) -> int:
+def get_minimal_combo(cur) -> int:
+    cur: psycopg2.cursor
     cur.execute(
         """SELECT MIN(total_combo_count) FROM combo_ranking;"""
     )
     return cur.fetchone()[0]
 
-def get_minimal_distance(cur: psycopg2.cursor) -> float:
+def get_minimal_distance(cur) -> float:
+    cur: psycopg2.cursor
     cur.execute(
         """SELECT MIN(total_distance) FROM distance_ranking;"""
     )
