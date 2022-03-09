@@ -70,7 +70,7 @@ def create_database():
                 end_id INTEGER,
                 total_combo_count INTEGER,
                 total_distance REAL,
-                rank INTEGER
+                ranking INTEGER
                 );"""
         )
 
@@ -82,7 +82,7 @@ def create_database():
                 end_id INTEGER,
                 total_combo_count INTEGER,
                 total_distance REAL,
-                rank INTEGER
+                ranking INTEGER DEFAULT 0
                 );"""
         )
 

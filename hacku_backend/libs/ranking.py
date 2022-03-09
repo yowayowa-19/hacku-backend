@@ -17,7 +17,7 @@ def get_ranking(user_id: int, table_name: str) -> list[Ranking]:
         cur: psycopg2.cursor
         cur.execute(
             f"""
-            SELECT user_ids, first_id, end_id, total_combo_count, total_distance, rank
+            SELECT user_ids, first_id, end_id, total_combo_count, total_distance, ranking
             FROM {table_name}
             ORDER BY combo_count DESC
             """
