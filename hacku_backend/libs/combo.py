@@ -1,26 +1,7 @@
-from datetime import datetime
-from pydantic import BaseModel
-
-from libs.akubi import Akubi
-
-from .db_util import connect
-
 import psycopg2
 
-# view
-
-
-class LastAkubi(BaseModel):
-    user_id: int
-    last_yawned_at: datetime
-
-
-class AkubiCombo(BaseModel):
-    user_id: int
-    combo_count: int
-    akubis: list[Akubi]
-    last_yawned_at: datetime
-
+from .db_util import connect
+from .view import Akubi, AkubiCombo, LastAkubi
 
 # controller
 

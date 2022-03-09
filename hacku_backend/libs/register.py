@@ -2,19 +2,11 @@ import base64
 import hashlib
 import os
 
-from pydantic import BaseModel
-
 from .db_util import connect
+from .view import UserCredential
+
 
 import psycopg2
-
-# view
-class UserCredential(BaseModel):
-    name: str
-    password: str
-
-class UserId(BaseModel):
-    id: int
 
 # controller
 
