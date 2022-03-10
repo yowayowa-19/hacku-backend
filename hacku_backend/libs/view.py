@@ -23,6 +23,7 @@ class LastAkubi(BaseModel):
 class AkubiCombo(BaseModel):
     user_id: int
     combo_count: int
+    distance: float
     akubis: list[Akubi]
     last_yawned_at: datetime
 

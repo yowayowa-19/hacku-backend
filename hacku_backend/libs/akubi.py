@@ -2,9 +2,9 @@ import random
 from datetime import datetime, timedelta
 
 import psycopg2
-from geopy.distance import geodesic
 
 from .db_util import connect
+from .util import calc_distance
 from .view import Akubi, AkubiCombo
 
 # controller
@@ -153,17 +153,7 @@ def decide_combo(cur):
 
 
 
-def distance(first: tuple[float], second: tuple[float]) -> float:
-    return geodesic(first, second).km
 
-
-def calc_distance(latlong_list: list[tuple[float]]) -> float:
-    result = 0
-    [
-        result := result + distance(f, s)
-        for f, s in zip(latlong_list[:-1], latlong_list[1:])
-    ]
-    return result
 
 def get_minimal_combo(cur) -> int:
     cur: psycopg2.cursor
