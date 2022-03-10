@@ -49,8 +49,8 @@ def create_database():
                 akubi_id SERIAL PRIMARY KEY,
                 user_id INTEGER,
                 yawned_at TIMESTAMP,
-                latitude REAL,
-                longitude REAL
+                latitude DOUBLE PRECISION,
+                longitude DOUBLE PRECISION,
                 );"""
         )
 
@@ -92,7 +92,7 @@ def create_database():
                 tmp_id SERIAL PRIMARY KEY,
                 user_id INTEGER,
                 yawned_at TIMESTAMP,
-                latitude REAL,
-                longitude REAL
+                latitude DOUBLE PRECISION,
+                longitude DOUBLE PRECISION
                 );"""
         )
