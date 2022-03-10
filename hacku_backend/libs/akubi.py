@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import psycopg2
 
 from .db_util import connect
-from .util import calc_distance
+from .util import calc_distance, distance
 from .view import Akubi, AkubiCombo
 
 # controller
@@ -39,8 +39,7 @@ def akubi_m(akubi: Akubi):
 
         if last_yawned_at and  yawned_at - last_yawned_at < timedelta(minutes=5):
             cur.execute(
-                """DELETE * 
-                FROM ongoing_combo 
+                """DELETE FROM ongoing_combo 
                 RETURNING user_id, yawned_at, latitude, longitude;"""
             )
             cur.executemany(
@@ -61,9 +60,15 @@ def akubi_m(akubi: Akubi):
 
         last_yawned_at = cur.fetchone()[0]
 
+        if len(ongoing_yawn) ==0:
+            distance = 0
+        else:
+            distance = calc_distance([(item[2], item[3]) for item in ongoing_yawn])
+
         result = AkubiCombo(
             user_id=akubi.user_id,
             combo_count=len(ongoing_yawn) + 1,
+            distance=distance,
             akubis=[
                 Akubi(
                     user_id=item[0],
@@ -81,8 +86,7 @@ def akubi_m(akubi: Akubi):
 def decide_combo(cur):
     cur: psycopg2.cursor
     cur.execute(
-        """DELETE * 
-        FROM ongoing_combo 
+        """DELETE FROM ongoing_combo 
         RETURNING user_id, yawned_at, latitude, longitude;"""
     )
 

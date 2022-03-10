@@ -13,9 +13,7 @@ def combo_c(last_akubi: LastAkubi):
 
     last_latlong = get_last_latlong()
 
-    latlong_list = [(last_latlong[0], last_latlong[1])] + [
-        (akubi[2], akubi[3]) for akubi in akubis
-    ]
+
 
     if len(akubis) == 0:
         return AkubiCombo(
@@ -25,6 +23,9 @@ def combo_c(last_akubi: LastAkubi):
             akubis=[],
             last_yawned_at=last_akubi.last_yawned_at,
         ).dict()
+    latlong_list = [(last_latlong[0], last_latlong[1])] + [
+        (akubi[2], akubi[3]) for akubi in akubis
+    ]
     return AkubiCombo(
         user_id=last_akubi.user_id,
         combo_count=len(akubis),
