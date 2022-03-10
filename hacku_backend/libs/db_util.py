@@ -50,7 +50,7 @@ def create_database():
                 user_id INTEGER,
                 yawned_at TIMESTAMP,
                 latitude DOUBLE PRECISION,
-                longitude DOUBLE PRECISION,
+                longitude DOUBLE PRECISION
                 );"""
         )
 
