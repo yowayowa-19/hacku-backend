@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, timedelta
 
 import psycopg2
@@ -18,6 +19,11 @@ def akubi_c(akubi: Akubi):
 
 def akubi_m(akubi: Akubi):
     yawned_at = datetime.now()
+
+    # 5kmの円の中くらいでずらしたい
+
+    noized_latitude = akubi.latitude + random.uniform(-0.04, 0.04)
+    noized_longitude = akubi.longitude + random.uniform(-0.04, 0.04)
 
     with connect() as conn, conn.cursor() as cur:
         conn: psycopg2.connection
@@ -50,7 +56,7 @@ def akubi_m(akubi: Akubi):
             """INSERT INTO ongoing_combo (user_id, yawned_at, latitude, longitude) 
                 VALUES(%s, %s, %s, %s) 
                 RETURNING yawned_at;""",
-            (akubi.user_id, yawned_at, akubi.latitude, akubi.longitude),
+            (akubi.user_id, yawned_at, noized_latitude, noized_longitude),
         )
 
         last_yawned_at = cur.fetchone()[0]
