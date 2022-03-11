@@ -78,12 +78,11 @@ def create_database():
             """CREATE TABLE IF NOT EXISTS distance_ranking(
                 rank_id SERIAL PRIMARY KEY,
                 user_ids INTEGER[],
-                first_id INTEGER,
+                first_id INTEGER REFERENCES users(user_id),
                 end_id INTEGER,
                 total_combo_count INTEGER,
                 total_distance REAL,
-                ranking INTEGER DEFAULT 0,
-                FOREIGN KEY (first_id) REFERENCES users(user_id)
+                ranking INTEGER DEFAULT 0
                 );"""
         )
 
