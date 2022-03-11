@@ -78,6 +78,7 @@ def akubi_m(akubi: Akubi):
         else:
             distance = calc_distance([(item[3], item[4]) for item in ongoing_yawn])
 
+        print(f'(l81) {distance=}')
         # print(f'{ongoing_yawn=}')
 
         result = AkubiCombo(
