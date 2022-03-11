@@ -47,7 +47,6 @@ def combo_c(last_akubi: LastAkubi):
 
 # model
 def combo_m(last_akubi: LastAkubi):
-    combo_acceptance_time = 5
     with connect() as conn, conn.cursor() as cur:
         conn: psycopg2.connection
         cur: psycopg2.cursor

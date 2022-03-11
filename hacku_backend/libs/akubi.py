@@ -39,9 +39,11 @@ def akubi_m(akubi: Akubi):
         last_yawned_at = cur.fetchone()[0] if cur.rowcount > 0 else None
         print(f'{last_yawned_at=}')
 
+        combo_acceptance_time = 1
+
         # コンボが継続中で，最後のレコードの時刻から5s(m)たっていたら，コンボを終了する
         # コンボが終了したら，継続コンボテーブルを削除して，削除したものをあくび表に挿入
-        if last_yawned_at and yawned_at - last_yawned_at > timedelta(minutes=5):
+        if last_yawned_at and yawned_at - last_yawned_at > timedelta(minutes=combo_acceptance_time):
             cur.execute(
                 """DELETE FROM ongoing_combo 
                 RETURNING user_id, yawned_at, latitude, longitude;"""
