@@ -46,12 +46,12 @@ def akubi_m(akubi: Akubi):
                 """DELETE FROM ongoing_combo 
                 RETURNING user_id, yawned_at, latitude, longitude;"""
             )
-            r = cur.fetchall()
-            print(r)
+            result = cur.fetchall()
+            print(f'コンボ終了時に走る処理{result=}')
             cur.executemany(
                 """INSERT INTO akubi (user_id, yawned_at, latitude, longitude) 
                 VALUES(%s, %s, %s, %s);""",
-                (r),
+                (result),
             )
 
         # 継続コンボテーブルからデータを持ってくる．
