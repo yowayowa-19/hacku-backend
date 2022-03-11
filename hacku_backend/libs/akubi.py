@@ -37,6 +37,7 @@ def akubi_m(akubi: Akubi):
         )
 
         last_yawned_at = cur.fetchone()[0] if cur.rowcount > 0 else None
+        print(f'{last_yawned_at=}')
 
         # コンボが継続中で，最後のレコードの時刻から5s(m)たっていたら，コンボを終了する
         # コンボが終了したら，継続コンボテーブルを削除して，削除したものをあくび表に挿入
@@ -72,7 +73,7 @@ def akubi_m(akubi: Akubi):
         else:
             distance = calc_distance([(item[2], item[3]) for item in ongoing_yawn])
 
-        print(ongoing_yawn)
+        print(f'{ongoing_yawn=}')
 
         result = AkubiCombo(
             user_id=akubi.user_id,
