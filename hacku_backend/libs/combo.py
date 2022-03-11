@@ -11,7 +11,6 @@ from .view import Akubi, AkubiCombo, LastAkubi
 def combo_c(last_akubi: LastAkubi):
     akubis = combo_m(last_akubi)
 
-
     # コンボ終了！
     if len(akubis) == 0:
         return AkubiCombo(
@@ -54,17 +53,12 @@ def combo_m(last_akubi: LastAkubi):
             """
             SELECT user_id, yawned_at, latitude, longitude
             FROM ongoing_combo 
-            WHERE yawned_at < %s
-            AND %s < yawned_at + cast( '%s minutes' as interval);
+            WHERE %s < yawned_at;
             """,
-            (
-                last_akubi.last_yawned_at,
-                last_akubi.last_yawned_at,
-                combo_acceptance_time,
-            ),
+            (last_akubi.last_yawned_at,),
         )
         result = cur.fetchall()
-        # print(result)
+        print(f"combo(l68): {result=}")
         return result
 
 
