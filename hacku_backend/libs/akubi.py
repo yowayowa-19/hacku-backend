@@ -71,7 +71,7 @@ def akubi_m(akubi: Akubi):
         if len(ongoing_yawn) == 0:
             distance = 0
         else:
-            distance = calc_distance([(item[2], item[3]) for item in ongoing_yawn])
+            distance = calc_distance([(item[3], item[4]) for item in ongoing_yawn])
 
         print(f'{ongoing_yawn=}')
 
