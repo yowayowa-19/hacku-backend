@@ -30,8 +30,8 @@ def combo_c(last_akubi: LastAkubi):
     latlong_list = [(last_latlong[0], last_latlong[1])] + [
         (akubi[2], akubi[3]) for akubi in akubis
     ]
-    print(f'(l33) {latlong_list=}')
-    print(f'distance={calc_distance(latlong_list)}')
+    # print(f'(l33) {latlong_list=}')
+    # print(f'distance={calc_distance(latlong_list)}')
     return AkubiCombo(
         user_id=last_akubi.user_id,
         combo_count=len(akubis),

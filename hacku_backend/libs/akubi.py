@@ -47,17 +47,8 @@ def akubi_m(akubi: Akubi):
         # コンボが継続中で，最後のレコードの時刻から5s(m)たっていたら，コンボを終了する
         # コンボが終了したら，継続コンボテーブルを削除して，削除したものをあくび表に挿入
         if last_yawned_at and yawned_at - last_yawned_at > timedelta(minutes=combo_acceptance_time):
-            cur.execute(
-                """DELETE FROM ongoing_combo 
-                RETURNING user_id, yawned_at, latitude, longitude;"""
-            )
-            result = cur.fetchall()
-            print(f'コンボ終了時に走る処理{result=}')
-            cur.executemany(
-                """INSERT INTO akubi (user_id, yawned_at, latitude, longitude) 
-                VALUES(%s, %s, %s, %s);""",
-                (result),
-            )
+            print(f'コンボ終了時に走る処理')
+            decide_combo(cur)
 
         # 継続コンボテーブルからデータを持ってくる．
         # データがあるなら，コンボが継続中ということである．
@@ -114,7 +105,7 @@ def decide_combo(cur):
     )
 
     latlong_list = [(item[2], item[3]) for item in result]
-    print(f'{latlong_list=}')
+    # print(f'{latlong_list=}')
 
     use_ids = [item[0] for item in result]
     first_id = use_ids[0]
@@ -125,15 +116,24 @@ def decide_combo(cur):
     minimal_combo = get_minimal_combo(cur)
     minimal_distance = get_minimal_distance(cur)
 
+    print(f'{minimal_combo=}')
+    print(f'{minimal_distance=}')
+
     if minimal_combo <= total_combo_count:
+        print("write to combo_ranking")
         cur.execute(
             """INSERT INTO combo_ranking (user_ids, first_id, end_id, total_combo_count, total_distance) 
-            VALUES(%s, %s, %s, %s, %s); """
+            VALUES(%s, %s, %s, %s, %s); """,
+            (use_ids, first_id, end_id, total_combo_count, total_distance),
         )
         cur.execute(
             """UPDATE combo_ranking
             SET ranking = r.rnk
-            FROM (rank_id, RANK() OVER (ORDER BY total_combo_count) AS rnk) r
+            FROM (
+                SELECT rank_id, RANK() 
+                OVER (ORDER BY total_combo_count) 
+                AS rnk 
+                FROM combo_ranking) r
             WHERE combo_ranking.rank_id = r.rank_id;"""
         )
         cur.execute(
@@ -144,41 +144,33 @@ def decide_combo(cur):
     if minimal_distance <= total_distance:
         cur.execute(
             """INSERT INTO distance_ranking (user_ids, first_id, end_id, total_combo_count, total_distance) 
-            VALUES(%s, %s, %s, %s, %s); """
+            VALUES(%s, %s, %s, %s, %s); """,
+            (use_ids, first_id, end_id, total_combo_count, total_distance),
         )
         cur.execute(
             """UPDATE distance_ranking
-            SET ranking = r.rnk
-            FROM (rank_id, RANK() OVER (ORDER BY total_distance) AS rnk) r
-            WHERE distance_ranking.rank_id = r.rank_id;"""
+                SET ranking = r.rnk
+                FROM (
+                    SELECT rank_id, RANK() 
+                    OVER (ORDER BY total_distance) 
+                    AS rnk
+                    FROM combo_ranking) r
+                WHERE distance_ranking.rank_id = r.rank_id;"""
         )
         cur.execute(
             """DELETE FROM distance_ranking
                 WHERE ranking > 10;"""
         )
 
-    cur.execute(
-        """ 
-        SELECT total_combo_count 
-        FROM combo_ranking
-        ORDER BY total_combo_count DESC
-        """
-    )
-
-    cur.execute(
-        """INSERT INTO combo_ranking (
-            user_ids, first_id, end_id, total_combo_count, total_distance);""",
-        (use_ids, first_id, end_id, total_combo_count, total_distance),
-    )
 
 
 def get_minimal_combo(cur) -> int:
     cur: psycopg2.cursor
     cur.execute("""SELECT MIN(total_combo_count) FROM combo_ranking;""")
-    return cur.fetchone()[0]
+    return x if (x := cur.fetchone()[0]) else 0
 
 
 def get_minimal_distance(cur) -> float:
     cur: psycopg2.cursor
     cur.execute("""SELECT MIN(total_distance) FROM distance_ranking;""")
-    return cur.fetchone()[0]
+    return x if (x := cur.fetchone()[0]) else 0
