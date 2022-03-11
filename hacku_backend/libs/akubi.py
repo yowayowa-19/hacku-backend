@@ -40,7 +40,7 @@ def akubi_m(akubi: Akubi):
         )
 
         last_yawned_at = cur.fetchone()[0] if cur.rowcount > 0 else None
-        print(f'{last_yawned_at=}')
+        # print(f'{last_yawned_at=}')
 
         combo_acceptance_time = 1
 
@@ -78,7 +78,7 @@ def akubi_m(akubi: Akubi):
         else:
             distance = calc_distance([(item[3], item[4]) for item in ongoing_yawn])
 
-        print(f'{ongoing_yawn=}')
+        # print(f'{ongoing_yawn=}')
 
         result = AkubiCombo(
             user_id=akubi.user_id,
