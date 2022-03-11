@@ -13,6 +13,7 @@ def combo_c(last_akubi: LastAkubi):
 
     print(f'{last_akubi=}')
     print(f"combo(l14): {akubis=}")
+    
 
     # コンボ終了！
     if len(akubis) == 0:

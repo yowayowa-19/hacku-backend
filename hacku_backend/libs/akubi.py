@@ -18,7 +18,9 @@ def akubi_c(akubi: Akubi):
 
 
 def akubi_m(akubi: Akubi):
-    yawned_at = datetime.now()
+    tmp_time = datetime.now()
+    yawned_at = tmp_time.isoformat(timespec="milliseconds")
+    
 
     # 5kmの円の中くらいでずらしたい
 
