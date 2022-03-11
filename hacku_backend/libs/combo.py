@@ -11,6 +11,7 @@ from .view import Akubi, AkubiCombo, LastAkubi
 def combo_c(last_akubi: LastAkubi):
     akubis = combo_m(last_akubi)
 
+    print(f'{last_akubi=}')
     print(f"combo(l14): {akubis=}")
 
     # コンボ終了！
@@ -59,7 +60,6 @@ def combo_m(last_akubi: LastAkubi):
             (last_akubi.last_yawned_at,),
         )
         result = cur.fetchall()
-        print(f"combo(l68): {result=}")
         return result
 
 
