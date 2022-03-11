@@ -17,8 +17,8 @@ def get_ranking(user_id: int, table_name: str, order_column: str) -> list[Rankin
         cur: psycopg2.cursor
         cur.execute(
             f"""
-            SELECT user_ids, first_id, end_id, total_combo_count, total_distance, ranking
-            FROM {table_name}
+            SELECT user_ids, first_id, users.name, end_id, total_combo_count, total_distance, ranking 
+            FROM {table_name} INNER JOIN users ON {table_name}.first_id = users.user_id
             ORDER BY {order_column} DESC
             """
         )
@@ -29,10 +29,11 @@ def get_ranking(user_id: int, table_name: str, order_column: str) -> list[Rankin
                 user_ids=(x := item[0]),
                 contain_user_id=(user_id in x),
                 first_id=item[1],
-                end_id=item[2],
-                total_combo_count=item[3],
-                total_distance=item[4],
-                rank=item[5],
+                first_id_name=item[2],
+                end_id=item[3],
+                total_combo_count=item[4],
+                total_distance=item[5],
+                rank=item[6],
             )
             for item in result
         ]

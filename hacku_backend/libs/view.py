@@ -40,6 +40,7 @@ class UserId(BaseModel):
 class Ranking(BaseModel):
     contain_user_id: bool
     first_id: int
+    first_id_name: str
     end_id: int
     total_combo_count: int
     total_distance: float
