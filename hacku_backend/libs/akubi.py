@@ -1,5 +1,5 @@
 import random
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 import psycopg2
 
@@ -19,7 +19,8 @@ def akubi_c(akubi: Akubi):
 
 def akubi_m(akubi: Akubi):
     tmp_time = datetime.now()
-    yawned_at = tmp_time.isoformat(timespec="milliseconds")
+    yawned_at = datetime.strptime(tmp_time.isoformat(timespec="milliseconds"))
+    
     
 
     # 5kmの円の中くらいでずらしたい
