@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import psycopg2
 
 from .db_util import connect
-from .util import calc_distance, distance
+from .util import calc_distance
 from .view import Akubi, AkubiCombo
 
 # controller
@@ -113,6 +113,7 @@ def decide_combo(cur):
     )
 
     latlong_list = [(item[2], item[3]) for item in result]
+    print(f'{latlong_list=}')
 
     use_ids = [item[0] for item in result]
     first_id = use_ids[0]
