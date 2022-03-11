@@ -26,7 +26,7 @@ def combo_c(last_akubi: LastAkubi):
         ).dict()
 
     # コンボ継続中！
-    last_latlong = get_last_latlong()
+    last_latlong = get_last_latlong(len(akubis))
     latlong_list = [(last_latlong[0], last_latlong[1])] + [
         (akubi[2], akubi[3]) for akubi in akubis
     ]
@@ -65,7 +65,7 @@ def combo_m(last_akubi: LastAkubi):
         return result
 
 
-def get_last_latlong():
+def get_last_latlong(n: int):
     with connect() as conn, conn.cursor() as cur:
         conn: psycopg2.connection
         cur: psycopg2.cursor
@@ -75,8 +75,9 @@ def get_last_latlong():
             SELECT latitude, longitude
             FROM ongoing_combo
             ORDER BY yawned_at DESC
-            LIMIT 1;
+            LIMIT 1 OFFSET %s;
             """,
+            (n,)
         )
         result = cur.fetchone()
         return result
