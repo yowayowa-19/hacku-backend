@@ -41,7 +41,7 @@ def akubi_m(akubi: Akubi):
 
         # コンボが継続中で，最後のレコードの時刻から5s(m)たっていたら，コンボを終了する
         # コンボが終了したら，継続コンボテーブルを削除して，削除したものをあくび表に挿入
-        if last_yawned_at and yawned_at - last_yawned_at < timedelta(minutes=5):
+        if last_yawned_at and yawned_at - last_yawned_at > timedelta(minutes=5):
             cur.execute(
                 """DELETE FROM ongoing_combo 
                 RETURNING user_id, yawned_at, latitude, longitude;"""
