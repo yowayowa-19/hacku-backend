@@ -46,6 +46,7 @@ def akubi_m(akubi: Akubi):
                 RETURNING user_id, yawned_at, latitude, longitude;"""
             )
             r = cur.fetchall()
+            print(r)
             cur.executemany(
                 """INSERT INTO akubi (user_id, yawned_at, latitude, longitude) 
                 VALUES(%s, %s, %s, %s);""",
@@ -71,16 +72,18 @@ def akubi_m(akubi: Akubi):
         else:
             distance = calc_distance([(item[2], item[3]) for item in ongoing_yawn])
 
+        print(ongoing_yawn)
+
         result = AkubiCombo(
             user_id=akubi.user_id,
             combo_count=len(ongoing_yawn) + 1,
             distance=distance,
             akubis=[
                 Akubi(
-                    user_id=item[0],
-                    yawned_at=item[1],
-                    latitude=item[2],
-                    longitude=item[3],
+                    user_id=item[1],
+                    yawned_at=item[2],
+                    latitude=item[3],
+                    longitude=item[4],
                 )
                 for item in ongoing_yawn
             ],
