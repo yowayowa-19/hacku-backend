@@ -11,10 +11,8 @@ from .view import Akubi, AkubiCombo, LastAkubi
 def combo_c(last_akubi: LastAkubi):
     akubis = combo_m(last_akubi)
 
-    last_latlong = get_last_latlong()
 
-
-
+    # コンボ終了！
     if len(akubis) == 0:
         return AkubiCombo(
             user_id=last_akubi.user_id,
@@ -23,6 +21,9 @@ def combo_c(last_akubi: LastAkubi):
             akubis=[],
             last_yawned_at=last_akubi.last_yawned_at,
         ).dict()
+
+    # コンボ継続中！
+    last_latlong = get_last_latlong()
     latlong_list = [(last_latlong[0], last_latlong[1])] + [
         (akubi[2], akubi[3]) for akubi in akubis
     ]
@@ -71,10 +72,11 @@ def get_last_latlong():
     with connect() as conn, conn.cursor() as cur:
         conn: psycopg2.connection
         cur: psycopg2.cursor
+        # コンボ継続中だったらakubiはだめ．ongoing_comboから取ってくる．
         cur.execute(
             """
             SELECT latitude, longitude
-            FROM akubi
+            FROM ongoing_combo
             ORDER BY yawned_at DESC
             LIMIT 1;
             """,

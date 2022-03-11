@@ -29,6 +29,7 @@ def akubi_m(akubi: Akubi):
         conn: psycopg2.connection
         cur: psycopg2.cursor
 
+        # 現在継続中のコンボのうち，最後のレコードの時刻を取得
         cur.execute(
             """SELECT yawned_at FROM ongoing_combo 
                 ORDER BY tmp_id DESC
@@ -37,18 +38,23 @@ def akubi_m(akubi: Akubi):
 
         last_yawned_at = cur.fetchone()[0] if cur.rowcount > 0 else None
 
-        if last_yawned_at and  yawned_at - last_yawned_at < timedelta(minutes=5):
+        # コンボが継続中で，最後のレコードの時刻から5s(m)たっていたら，コンボを終了する
+        # コンボが終了したら，継続コンボテーブルを削除して，削除したものをあくび表に挿入
+        if last_yawned_at and yawned_at - last_yawned_at < timedelta(minutes=5):
             cur.execute(
                 """DELETE FROM ongoing_combo 
                 RETURNING user_id, yawned_at, latitude, longitude;"""
             )
+            r = cur.fetchall()
             cur.executemany(
                 """INSERT INTO akubi (user_id, yawned_at, latitude, longitude) 
                 VALUES(%s, %s, %s, %s);""",
-                (cur.fetchall()),
+                (r),
             )
-        cur.execute("SELECT * FROM ongoing_combo;")
 
+        # 継続コンボテーブルからデータを持ってくる．
+        # データがあるなら，コンボが継続中ということである．
+        cur.execute("SELECT * FROM ongoing_combo;")
         ongoing_yawn = cur.fetchall()
 
         cur.execute(
@@ -60,7 +66,7 @@ def akubi_m(akubi: Akubi):
 
         last_yawned_at = cur.fetchone()[0]
 
-        if len(ongoing_yawn) ==0:
+        if len(ongoing_yawn) == 0:
             distance = 0
         else:
             distance = calc_distance([(item[2], item[3]) for item in ongoing_yawn])
@@ -155,20 +161,13 @@ def decide_combo(cur):
     )
 
 
-
-
-
-
 def get_minimal_combo(cur) -> int:
     cur: psycopg2.cursor
-    cur.execute(
-        """SELECT MIN(total_combo_count) FROM combo_ranking;"""
-    )
+    cur.execute("""SELECT MIN(total_combo_count) FROM combo_ranking;""")
     return cur.fetchone()[0]
+
 
 def get_minimal_distance(cur) -> float:
     cur: psycopg2.cursor
-    cur.execute(
-        """SELECT MIN(total_distance) FROM distance_ranking;"""
-    )
+    cur.execute("""SELECT MIN(total_distance) FROM distance_ranking;""")
     return cur.fetchone()[0]
