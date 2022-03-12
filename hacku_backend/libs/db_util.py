@@ -1,3 +1,4 @@
+import json
 import time
 
 import psycopg2
@@ -6,11 +7,12 @@ import psycopg2
 def connect():
     # TODO read from config
     username = "yowayowa"
-    password = "pass"
     hostname = "postgres"
     port = 5432
     database = "pg"
 
+    with open("/run/secrets/POSTGRES_PASSWORD", "r") as f:
+        password = f.read()
     try:
         conn = psycopg2.connect(
             f"postgresql://{username}:{password}@{hostname}:{port}/{database}"
@@ -30,7 +32,6 @@ def connect_delay():
     return conn
 
 
-
 def create_database():
     with connect_delay() as conn, conn.cursor() as cur:
         conn: psycopg2.connection
@@ -43,7 +44,7 @@ def create_database():
                 digest TEXT
                 );"""
         )
-        
+
         cur.execute(
             """CREATE TABLE IF NOT EXISTS akubi (
                 akubi_id SERIAL PRIMARY KEY,
@@ -85,7 +86,6 @@ def create_database():
                 ranking INTEGER DEFAULT 0
                 );"""
         )
-
 
         cur.execute(
             """CREATE TABLE IF NOT EXISTS ongoing_combo(
